@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -35,6 +36,13 @@ room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
 
+# Fill rooms with items
+room['outside'].items = [Item("flower", "a flower to pick from the ground"), Item("sword", "a dull broadsword")]
+room['foyer'].items = [Item("knife", "a small pocket knife"), Item("banana", "an overripe banana")]
+room['overlook'].items = [Item("parachute", "an unopened parachute")]
+room['narrow'].items = [Item("water bottle", "a half empty water bottle")]
+room['treasure'].items = [Item("a boot", "a lost boot")]
+
 #
 # Main
 #
@@ -56,6 +64,42 @@ while not gameOver:
 
     # * Prints the current description (the textwrap module might be useful here).
     print(room[player1.location].description, "\n")
+
+    # Print out all items available in current room
+    print("items available to pickup from this room: ")
+    for item in room[player1.location].items:
+        print("- ", item.name, '\n')
+
+    #ask if player wants to interact with items in room/inventory
+    updateInventory = True
+    while updateInventory:
+        actionChosen = input("What would you like to do? (ex --> 'take flower', 'drop knife') or press 'c' to continue: ")
+        actionChosen = actionChosen.split(" ")
+
+        #stopping condition, user wants to continue to move directions
+        if actionChosen[0] == 'c':
+            updateInventory = False
+        #if user attempts to take item from current room
+        elif actionChosen[0] == "take" or actionChosen[0] == 'get':
+            if actionChosen[1] in room[player1.location].items:
+                #add item to player inventory
+
+                #remove item from room items list
+            else:
+                print("That item does not exist in this room.")
+        elif actionChosen[0] == "drop":
+            if actionChosen[1] in room[player1.location].items:
+                #remove item from player inventory
+
+                #add item to current room items list
+            else:
+                print("That item does not exist in this room.")
+
+
+       
+            
+            
+
 
     # * Waits for user input and decides what to do.
     validDirection = False
