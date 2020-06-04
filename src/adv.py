@@ -55,26 +55,53 @@ while not gameOver:
     print("You are currently located in room: ", player1.location)
 
     # * Prints the current description (the textwrap module might be useful here).
-    print(room[player1.location].description)
+    print(room[player1.location].description, "\n")
 
     # * Waits for user input and decides what to do.
     validDirection = False
     while not validDirection:
 
-        directionToMove = input("What direction would you like to move? Please enter n, s, e or w: ")
+        directionToMove = input("What direction would you like to move? \n\nPlease enter n, s, e or w (or press q to quit): ")
 
-        if directionToMove != "n" and directionToMove != "s" and directionToMove != "e" and directionToMove != "w":
+        # If the user enters "q", quit the game.
+        if directionToMove == "q":
+            gameOver = True
+            validDirection = True
+        #If the user enters a direction other than n, s, e, or w print an error
+        elif directionToMove != "n" and directionToMove != "s" and directionToMove != "e" and directionToMove != "w":
             print("That is not a valid direction! please enter n, s, e, or w to move directions.")
         else:
             validDirection = True
 
+    # If the user enters a cardinal direction, attempt to move to the room there.
+    # Print an error message if the movement isn't allowed.
     
+    def findNewLocation(nextRoom):
+        for key, value in room.items():
+            if value == nextRoom:
+                return key #which is the new location to move to here
+
+    if directionToMove == "n":
+        if room[player1.location].n_to == None:
+            print("There is no room available to move to in that direction\n")
+        else: 
+            player1.location = findNewLocation(room[player1.location].n_to)
+    elif directionToMove == "s":
+        if room[player1.location].s_to == None:
+            print("There is no room available to move to in that direction\n")
+        else: 
+            player1.location = findNewLocation(room[player1.location].s_to)
+    elif directionToMove == "e":
+        if room[player1.location].e_to == None:
+            print("There is no room available to move to in that direction\n")
+        else: 
+            player1.location = findNewLocation(room[player1.location].e_to)
+    elif directionToMove == "w":
+        if room[player1.location].w_to == None:
+            print("There is no room available to move to in that direction\n")
+        else: 
+            player1.location = findNewLocation(room[player1.location].w_to)
     
 
 
 
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
