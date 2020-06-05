@@ -6,3 +6,8 @@ class Player:
         self.location = location
         self.inventory = inventory
         
+    def addToInventory(self, item):
+        self.inventory.append(item)
+
+    def removeFromInventory(self, item):
+        self.inventory.remove(item)

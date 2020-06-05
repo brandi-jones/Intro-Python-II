@@ -73,35 +73,70 @@ while not gameOver:
     #ask if player wants to interact with items in room/inventory
     updateInventory = True
     while updateInventory:
-        actionChosen = input("What would you like to do? (ex --> 'take flower', 'drop knife') or press 'c' to continue: ")
+        actionChosen = input("What would you like to do? \n Enter 'take *item name*' or 'get *item name*' to pick up item \n Enter 'drop *item name*' to drop item from inventory \n Enter 'i' or 'inventory to view your inventory \n or press 'c' to continue: ")
         actionChosen = actionChosen.split(" ")
 
         #stopping condition, user wants to continue to move directions
         if actionChosen[0] == 'c':
             updateInventory = False
+
+        #print player inventory
+        elif actionChosen[0] == 'i' or actionChosen[0] == 'inventory':
+            print("\n Your current inventory: \n"),
+            if not player1.inventory:
+                print ("\nYour inventory is empty! \n")
+            else:
+                for i in player1.inventory:
+                    print("- ", i.name, '\n')
+
         #if user attempts to take item from current room
         elif actionChosen[0] == "take" or actionChosen[0] == 'get':
-            if actionChosen[1] in room[player1.location].items:
-                #add item to player inventory
+            foundItemInRoom = False
 
-                #remove item from room items list
-            else:
-                print("That item does not exist in this room.")
+            #check to see if item exists in room
+            for Item in room[player1.location].items:
+                #if found
+                if Item.name == actionChosen[1]:
+                    foundItemInRoom = True
+                    #add item to player inventory
+                    player1.addToInventory(Item)
+
+                    #remove item from room items list
+                    room[player1.location].removeFromItems(Item)
+
+                    #print what item the user picked up
+                    print("\n You picked up *", Item.name, "* \n")
+
+            if not foundItemInRoom:
+                print("\n That item does not exist in this room. \n")
+
+        #if user attemps to drop an item from their inventory
         elif actionChosen[0] == "drop":
-            if actionChosen[1] in room[player1.location].items:
-                #remove item from player inventory
+            foundItemInInv = False
 
-                #add item to current room items list
-            else:
-                print("That item does not exist in this room.")
+            #check to see if item exists in inventory
+            for invItem in player1.inventory:
+                #if found
+                if invItem.name == actionChosen[1]:
+                    foundItemInInv = True
+                    #remove item from player inventory
+                    player1.removeFromInventory(invItem)
+
+                    #add item to room items list
+                    room[player1.location].addToItems(invItem)
+                    
+                    #print what item the user dropped
+                    print("\n You dropped *", invItem.name, "* \n")
+
+            if not foundItemInInv:
+                print("\n That item does not exist in your inventory \n")
+
+        #if user enters non valid command
+        else:
+            print("\nThat is an invalid command!\n")
 
 
-       
-            
-            
-
-
-    # * Waits for user input and decides what to do.
+    # * Waits for user input and decides what to do for moving directions
     validDirection = False
     while not validDirection:
 
