@@ -68,7 +68,7 @@ while not gameOver:
     # Print out all items available in current room
     print("items available to pickup from this room: ")
     for item in room[player1.location].items:
-        print("- ", item.name, '\n')
+        print("- ", item.name, " - ", item.description, '\n')
 
     #ask if player wants to interact with items in room/inventory
     updateInventory = True
